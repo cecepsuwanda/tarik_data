@@ -1,9 +1,3 @@
-<html>
-<head><title>Contoh Koneksi Mesin Absensi Mengunakan SOAP Web Service</title></head>
-<body bgcolor="#caffcb">
-
-<H3>Download Log Data</H3>
-
 <?php
 $IP=isset($_POST["ip"]) ? $_POST["ip"] : "192.168.1.201";
 $Key=isset($_POST["key"]) ? $_POST["key"] : "0";
@@ -12,100 +6,7 @@ $user=isset($_POST["user"]) ? $_POST["user"] : "root";
 $pass=isset($_POST["pass"]) ? $_POST["pass"] : "";
 $db=isset($_POST["key"]) ? $_POST["db"] : "";
 $tabel=isset($_POST["tabel"]) ? $_POST["tabel"] : "";
-?>
 
-<form action="tarik-data.php" method="post" >
-<h3>Setting Finger Print</h3>
-<table>
-  <tr>
-  	<td>
-  	  IP Address	
-  	</td>
-  	<td>
-      :		
-  	</td>
-  	<td>
-      <input type="Text" name="ip" value="<?php echo $IP; ?>" size=15 required>		
-  	</td>
-  </tr>
-  <tr>
-  	<td>
-      Comm Key 		
-  	</td>
-  	<td>
-       :		
-  	</td>
-  	<td>
-      <input type="Text" name="key" size="5" value="<?php echo $Key; ?>" require> 		
-  	</td>
-  </tr>	
-</table>
-   
-<h3>Setting MySQL</h3>
-
-<table>
-	<tr>
-		<td>
-		  Host 	
-		</td>
-		<td>
-		   :	
-		</td>
-		<td>
-		   <input type="Text" name="host" value="<?php echo $host; ?>" size=15 required>	
-		</td>
-	</tr>
-	<tr>
-		<td>
-	      User 		
-		</td>
-		<td>
-	      :
-		</td>
-		<td>
-		   <input type="Text" name="user" size="15" value="<?php echo $user; ?>" required>			
-		</td>
-	</tr>
-	<tr>
-		<td>
-		  Pass 
-		</td>
-		<td>
-			:
-		</td>
-		<td>
-		   <input type="Text" name="pass" size="15" value="<?php echo $pass; ?>" required>		
-		</td>
-	</tr>
-	<tr>
-		<td>
-	      DB 		
-		</td>
-		<td>
-			:
-		</td>
-		<td>
-		   <input type="Text" name="db" size="15" value="<?php echo $db; ?>" required>	
-		</td>
-	</tr>
-	<tr>
-		<td>
-          Tabel 		
-		</td>
-		<td>
-		   :	
-		</td>
-		<td>
-		   <input type="Text" name="tabel" size="15" value="<?php echo $tabel; ?>" required>	
-		</td>
-	</tr>
-</table>
-
-<input type="Submit" name="submit" value="Download">
-</form>
-<BR>
-
-<?php
 if(isset($_POST["ip"])){
     set_time_limit(0);
     echo "Connect Ke Fingerprint : <br>";
@@ -204,6 +105,3 @@ if(isset($_POST["ip"])){
 
   }	
 ?>
-
-</body>
-</html>
