@@ -1,10 +1,13 @@
 <html>
-<head><title>Tarik Data Mesin Absensi</title></head>
+<head>
+	 <title>Tarik Data Mesin Absensi</title>
+
+</head>
 <body bgcolor="#caffcb">
 
 <H3>Download Log Data</H3>
 
-<form action="tarik-data.php" method="post" >
+<form id="frm_download" action="" method="post" >
 <h3>Setting Finger Print</h3>
 <table>
   <tr>
