@@ -96,6 +96,19 @@
 
 <input type="Submit" name="submit" value="Download">
 </form>
+<br>
+Baca Data dari Fingerprint : <br>
+<div id="dt_fp"></div>
+<br>
+<table cellspacing="2" cellpadding="2" border="1">
+	<tr align="center">
+	    <td><B>UserID</B></td>
+	    <td width="200"><B>Tanggal & Jam</B></td>
+	    <td><B>Verifikasi</B></td>
+	    <td><B>Status</B></td>
+	</tr>
+	<div id="dt_table"></div>
+</table>	
 
 </body>
 </html>
