@@ -21,9 +21,11 @@ class fp_connect
 		if(!empty($ip)){
           $this->ip = $ip;                  
 		}
+		
+
 		$this->sock = fsockopen($this->ip, "80", $this->errno, $this->errstr, 1);
 		if (!$this->sock) {
-           throw new Exception("$errstr ($errno)");
+           throw new Exception("$this->errstr ($this->errno)");
         }
 	}
 

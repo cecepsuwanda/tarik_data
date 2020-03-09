@@ -2,6 +2,31 @@
 <head>
 	 <title>Tarik Data Mesin Absensi</title>
 
+	 <script type = "text/javascript" 
+         src = "http://localhost/tarik_data/jquery-3.4.1.min.js">
+      </script>
+		
+      <script type = "text/javascript" language = "javascript">
+         $(document).ready(function() {
+             $("#frm_download").submit(function(e){
+                  e.preventDefault();
+                  $.ajax({
+							url: 'http://localhost/tarik_data/tarik-data.php',
+							data: $("#frm_download").serialize(),
+							error: function() {
+							          alert('error');
+							       },
+							dataType: 'json',
+							success: function(data) {
+							                           alert(data.text);
+							                         },
+							type: 'POST'
+						});
+
+             });
+         });
+      </script>
+
 </head>
 <body bgcolor="#caffcb">
 
@@ -97,9 +122,9 @@
 <input type="Submit" name="submit" value="Download">
 </form>
 <br>
-Baca Data dari Fingerprint : <br>
+<!--Baca Data dari Fingerprint : <br>
 <div id="dt_fp"></div>
-<br>
+<br>-->
 <table cellspacing="2" cellpadding="2" border="1">
 	<tr align="center">
 	    <td><B>UserID</B></td>

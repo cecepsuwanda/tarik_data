@@ -2,6 +2,8 @@
 
 if( isset($_SERVER['HTTP_X_REQUESTED_WITH'])  && ( $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest' ) )
 {    
+    require_once 'fp_connect.php';
+    require_once 'db_connect.php';
     // Code that will run if this file called via AJAX request
 
     $IP=isset($_POST["ip"]) ? $_POST["ip"] : "192.168.1.201";
@@ -11,6 +13,20 @@ if( isset($_SERVER['HTTP_X_REQUESTED_WITH'])  && ( $_SERVER['HTTP_X_REQUESTED_WI
     $pass=isset($_POST["pass"]) ? $_POST["pass"] : "";
     $db=isset($_POST["key"]) ? $_POST["db"] : "";
     $tabel=isset($_POST["tabel"]) ? $_POST["tabel"] : "";
+    
+    try {
+    	
+    	$Connect = new fp_connect($IP);
+        $data = $Connect->read_all_fpdata($Key);
+        
+
+
+        echo json_encode(array('text'=>'Masuk !!!'));
+
+    } catch (Exception $e) {
+    	echo json_encode(array('text'=>$e));
+    }
+      
 
 } else {
 	header("Location: http://localhost/tarik_data");
