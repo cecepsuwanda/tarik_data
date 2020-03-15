@@ -48,13 +48,14 @@ class fp_connect
 		$soap_request="<GetAttLog><ArgComKey xsi:type=\"xsd:integer\">".$key."</ArgComKey><Arg><PIN xsi:type=\"xsd:integer\">All</PIN></Arg></GetAttLog>";
 		$buffer = $this->read($soap_request);
 		$buffer=$this->Parse_Data($buffer,"<GetAttLogResponse>","</GetAttLogResponse>");
+		$buffer=explode("\r\n",$buffer);
 		$arr_fpdata=array();
 		for($a=0;$a<count($buffer);$a++){
-		    $data=Parse_Data($buffer[$a],"<Row>","</Row>");
-		    $PIN=Parse_Data($data,"<PIN>","</PIN>");
-		    $DateTime=Parse_Data($data,"<DateTime>","</DateTime>");
-		    $Verified=Parse_Data($data,"<Verified>","</Verified>");
-		    $Status=Parse_Data($data,"<Status>","</Status>");
+		    $data=$this->Parse_Data($buffer[$a],"<Row>","</Row>");
+		    $PIN=$this->Parse_Data($data,"<PIN>","</PIN>");
+		    $DateTime=$this->Parse_Data($data,"<DateTime>","</DateTime>");
+		    $Verified=$this->Parse_Data($data,"<Verified>","</Verified>");
+		    $Status=$this->Parse_Data($data,"<Status>","</Status>");
 		    $arr_fpdata[]=array('pin'=>$PIN,'datetime'=>$DateTime,'verified'=>$Verified,'status'=>$Status);
 		}
 		

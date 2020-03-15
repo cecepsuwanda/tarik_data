@@ -1,9 +1,13 @@
+<?php
+
+?>
+
 <html>
 <head>
 	 <title>Tarik Data Mesin Absensi</title>
 
 	 <script type = "text/javascript" 
-         src = "http://localhost/tarik_data/jquery-3.4.1.min.js">
+         src = "jquery-3.4.1.min.js">
       </script>
 		
       <script type = "text/javascript" language = "javascript">
@@ -11,14 +15,14 @@
              $("#frm_download").submit(function(e){
                   e.preventDefault();
                   $.ajax({
-							url: 'http://localhost/tarik_data/tarik-data.php',
+							url: 'tarik-data.php',
 							data: $("#frm_download").serialize(),
 							error: function() {
 							          alert('error');
 							       },
 							dataType: 'json',
 							success: function(data) {
-							                           alert(data.text);
+							                           $("#dt_table").html(data.text);
 							                         },
 							type: 'POST'
 						});
@@ -43,7 +47,7 @@
       :		
   	</td>
   	<td>
-      <input type="Text" name="ip" value="192.168.1.201" size=15 required>		
+      <input type="Text" name="ip" value="192.168.0.201" size=15 required>		
   	</td>
   </tr>
   <tr>
@@ -125,15 +129,8 @@
 <!--Baca Data dari Fingerprint : <br>
 <div id="dt_fp"></div>
 <br>-->
-<table cellspacing="2" cellpadding="2" border="1">
-	<tr align="center">
-	    <td><B>UserID</B></td>
-	    <td width="200"><B>Tanggal & Jam</B></td>
-	    <td><B>Verifikasi</B></td>
-	    <td><B>Status</B></td>
-	</tr>
 	<div id="dt_table"></div>
-</table>	
+	
 
 </body>
 </html>
