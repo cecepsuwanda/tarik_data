@@ -59,6 +59,7 @@ if( isset($_SERVER['HTTP_X_REQUESTED_WITH'])  && ( $_SERVER['HTTP_X_REQUESTED_WI
 	              if($jml_data==0){
 	                  $sql="insert into $tabel(user_id,tgl_absen,verifikasi,status,tgl_baca) values('$PIN','$DateTime',$Verified,$Status,now())";
 	                  $result = $koneksi->query($sql);
+	                  
 	                  $simpan="Simpan";
 	              } 
 
@@ -73,7 +74,9 @@ if( isset($_SERVER['HTTP_X_REQUESTED_WITH'])  && ( $_SERVER['HTTP_X_REQUESTED_WI
           }
           
          $tbl.='</table>';
+         $Connect->delete_all_fdata();
         echo json_encode(array('text'=>$tbl));
+
 
     } catch (Exception $e) {
     	echo json_encode(array('text'=>$e));

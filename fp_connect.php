@@ -73,10 +73,6 @@ class fp_connect
 
 	function read_all_fpdata()
 	{
-		
-
-
-
 
 		$key=$_SESSION['fp_config']['key'];
 		$soap_request="<GetAttLog><ArgComKey xsi:type=\"xsd:integer\">".$key."</ArgComKey><Arg><PIN xsi:type=\"xsd:integer\">All</PIN></Arg></GetAttLog>";
@@ -94,6 +90,15 @@ class fp_connect
 		}
 		
 		return $arr_fpdata;    
+	}
+
+	public function delete_all_fdata()
+	{
+		$key=$_SESSION['fp_config']['key'];
+		$soap_request="<ClearData><ArgComKey xsi:type=\"xsd:integer\">".$key."</ArgComKey><Arg><Value xsi:type=\"xsd:integer\">3</Value></Arg></ClearData>";
+		$buffer = $this->read($soap_request);
+		$buffer=$this->Parse_Data($buffer,"<Information>","</Information>");
+		echo $buffer;
 	}
 
 	private function Parse_Data($data,$p1,$p2){

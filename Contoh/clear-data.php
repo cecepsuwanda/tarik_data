@@ -4,23 +4,23 @@
 
 <H3>Clear Log Data</H3>
 
-<?
-$IP=$HTTP_GET_VARS["ip"];
-$Key=$HTTP_GET_VARS["key"];
-if($IP=="") $IP="192.168.1.201";
-if($Key=="") $Key="0";
+<?php
+$IP=isset($HTTP_GET_VARS["ip"]) ? $HTTP_GET_VARS["ip"] : "192.168.0.201";
+$Key=isset($HTTP_GET_VARS["key"]) ? $HTTP_GET_VARS["key"] : "0";
+//if($IP=="") $IP="192.168.1.201";
+//if($Key=="") $Key="0";
 ?>
 
-<form action="clear-data.php">
-IP Address: <input type="Text" name="ip" value="<?=$IP?>" size=15><BR>
-Comm Key: <input type="Text" name="key" size="5" value="<?=$Key?>"><BR><BR>
+<!--<form action="clear-data.php">
+IP Address: <input type="Text" name="ip" value="<?php echo $IP; ?>" size=15><BR>
+Comm Key: <input type="Text" name="key" size="5" value="<?php echo $Key; ?>"><BR><BR>
 
 <input type="Submit" value="Clear Log">
 </form>
-<BR>
+<BR>-->
 
-<?
-if($HTTP_GET_VARS["ip"]!=""){
+<?php
+//if(isset($HTTP_GET_VARS["ip"])){
 	$Connect = fsockopen($IP, "80", $errno, $errstr, 1);
 	if($Connect){
 		$soap_request="<ClearData><ArgComKey xsi:type=\"xsd:integer\">".$Key."</ArgComKey><Arg><Value xsi:type=\"xsd:integer\">3</Value></Arg></ClearData>";
@@ -38,7 +38,7 @@ if($HTTP_GET_VARS["ip"]!=""){
 	$buffer=Parse_Data($buffer,"<Information>","</Information>");
 	echo "<B>Result:</B><BR>";
 	echo $buffer;
-}	
+//}	
 ?>
 
 </body>
