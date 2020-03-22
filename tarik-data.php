@@ -1,28 +1,29 @@
 <?php
+require_once 'config.php';
+require_once 'fp_connect.php';
+require_once 'db_connect.php';
 
 if( isset($_SERVER['HTTP_X_REQUESTED_WITH'])  && ( $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest' ) )
 {    
-    require_once 'fp_connect.php';
-    require_once 'db_connect.php';
-    set_time_limit(0);
+    
     // Code that will run if this file called via AJAX request
 
-    $IP=isset($_POST["ip"]) ? $_POST["ip"] : "192.168.1.201";
+   /* $IP=isset($_POST["ip"]) ? $_POST["ip"] : "192.168.1.201";
     $Key=isset($_POST["key"]) ? $_POST["key"] : "0";
     $host=isset($_POST["host"]) ? $_POST["host"] : "localhost";
     $user=isset($_POST["user"]) ? $_POST["user"] : "root";
     $pass=isset($_POST["pass"]) ? $_POST["pass"] : "";
     $db=isset($_POST["key"]) ? $_POST["db"] : "";
-    $tabel=isset($_POST["tabel"]) ? $_POST["tabel"] : "";
-    
+    $tabel=isset($_POST["tabel"]) ? $_POST["tabel"] : "";*/
+    $tabel=$_SESSION['db_config']['tabel'];
     try {
     	
-    	$Connect = new fp_connect($IP);
-        $data = $Connect->read_all_fpdata($Key);
+    	$Connect = new fp_connect();
+        $data = $Connect->read_all_fpdata();
         
-        $koneksi = new db_connect($host,$user,$pass,$db);
+        $koneksi = new db_connect();
         
-         $result = $koneksi->query("SHOW TABLES LIKE '{$tabel}'");
+         $result = $koneksi->query("SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME LIKE '$tabel'");
           if($koneksi->numrows()!=1)
           {
                $sql="CREATE TABLE `$tabel` (
@@ -43,27 +44,32 @@ if( isset($_SERVER['HTTP_X_REQUESTED_WITH'])  && ( $_SERVER['HTTP_X_REQUESTED_WI
                 <td width="200"><B>Tanggal & Jam</B></td>
                 <td><B>Verifikasi</B></td>
                 <td><B>Status</B></td>
+                <td>Simpan/Tidak</td>
                 </tr>';
         foreach ($data as $row) {
               $PIN=$row['pin'];
               $DateTime=$row['datetime'];
               $Verified=$row['verified'];
               $Status=$row['status'];
-              $sql="select * from $tabel where user_id='$PIN' and tgl_absen='$DateTime'";
-              $result = $koneksi->query($sql);
-              $jml_data=$koneksi->numrows();                 
-              if($jml_data==0){
-                  $sql="insert into $tabel(user_id,tgl_absen,verifikasi,status,tgl_baca) values('$PIN','$DateTime',$Verified,$Status,now())";
-                  $result = $koneksi->query($sql);
-              } 
+              if ($PIN!=""){
+	              $sql="select * from $tabel where user_id='$PIN' and tgl_absen='$DateTime'";
+	              $result = $koneksi->query($sql);
+	              $jml_data=$koneksi->numrows();                 
+	              $simpan="Tidak";
+	              if($jml_data==0){
+	                  $sql="insert into $tabel(user_id,tgl_absen,verifikasi,status,tgl_baca) values('$PIN','$DateTime',$Verified,$Status,now())";
+	                  $result = $koneksi->query($sql);
+	                  $simpan="Simpan";
+	              } 
 
-              $tbl .= "<tr align='center'>
-              <td>$PIN</td>
-              <td>$DateTime</td>
-              <td>$Verified</td>
-              <td>$Status</td>
-              </tr>";
-
+	              $tbl .= "<tr align='center'>
+	              <td>$PIN</td>
+	              <td>$DateTime</td>
+	              <td>$Verified</td>
+	              <td>$Status</td>
+	              <td>$simpan</td>
+	              </tr>";
+            }
           }
           
          $tbl.='</table>';

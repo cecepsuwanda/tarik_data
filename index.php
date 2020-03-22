@@ -12,22 +12,37 @@
 		
       <script type = "text/javascript" language = "javascript">
          $(document).ready(function() {
+             var source;            
+
+
              $("#frm_download").submit(function(e){
                   e.preventDefault();
+                  $("#dt_table").html("");
+                  $("#dt_finger").html("");
+                   
+		             	source = new EventSource("demo_sse.php");
+		                source.onmessage = function(event) {
+		                    $("#dt_finger").html(event.data);
+		                }; 
+
                   $.ajax({
 							url: 'tarik-data.php',
 							data: $("#frm_download").serialize(),
 							error: function() {
 							          alert('error');
+							          source.close();
 							       },
 							dataType: 'json',
 							success: function(data) {
 							                           $("#dt_table").html(data.text);
+							                           source.close();
 							                         },
 							type: 'POST'
 						});
 
              });
+
+
          });
       </script>
 
@@ -37,7 +52,7 @@
 <H3>Download Log Data</H3>
 
 <form id="frm_download" action="" method="post" >
-<h3>Setting Finger Print</h3>
+<!--<h3>Setting Finger Print</h3>
 <table>
   <tr>
   	<td>
@@ -121,16 +136,12 @@
 		   <input type="Text" name="tabel" size="15" value="" required>	
 		</td>
 	</tr>
-</table>
+</table>-->
 
 <input type="Submit" name="submit" value="Download">
 </form>
 <br>
-<!--Baca Data dari Fingerprint : <br>
-<div id="dt_fp"></div>
-<br>-->
-	<div id="dt_table"></div>
-	
-
+<div id="dt_finger"></div>
+<div id="dt_table"></div>
 </body>
 </html>

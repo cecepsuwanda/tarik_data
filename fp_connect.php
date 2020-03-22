@@ -10,9 +10,9 @@ class fp_connect
     private $errstr;
     private $sock;
 
-	function __construct($ip)
+	function __construct()
 	{
-		$this->ip = $ip;
+		$this->ip = $_SESSION['fp_config']['ip'];
         $this->connect();
 	}
 
@@ -31,20 +31,54 @@ class fp_connect
 
 	function read($soap_request)
 	{
+		 $tabel=$_SESSION['db_config']['tabel'];
+
+		 $koneksi = new db_connect();
+        
+          $result = $koneksi->query("SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME LIKE 'log_$tabel'");
+          
+          if($koneksi->numrows()==0)
+          {
+              //echo "create";
+               $sql="CREATE TABLE `log_$tabel` (
+                      `id` int(11) NOT NULL AUTO_INCREMENT,
+                      `no` int(11) DEFAULT 0,
+                      `log` varchar(255) DEFAULT NULL,                      
+                      PRIMARY KEY (`id`)
+                     )";
+                $result = $koneksi->query($sql);
+          }else{
+          	    //echo "delete";
+          	    $sql="DELETE FROM `log_$tabel`";
+                $result = $koneksi->query($sql);
+          }
+
+
 		$newLine="\r\n";
 		fputs($this->sock, "POST /iWsService HTTP/1.0".$newLine);
 	    fputs($this->sock, "Content-Type: text/xml".$newLine);
 	    fputs($this->sock, "Content-Length: ".strlen($soap_request).$newLine.$newLine);
 	    fputs($this->sock, $soap_request.$newLine);
 		$buffer="";		
+		$i=1;
 		while($Response=fgets($this->sock, 1024)){			
-			$buffer=$buffer.$Response;			
+			$tmp=str_replace("\r\n","",$Response);
+			$sql="insert into log_$tabel(no,log) values('$i','$tmp')";
+	        $result = $koneksi->query($sql);
+			$buffer=$buffer.$Response;
+			$i=$i+1;			
 		}        
         return $buffer;
 	}
 
-	function read_all_fpdata($key)
+	function read_all_fpdata()
 	{
+		
+
+
+
+
+		$key=$_SESSION['fp_config']['key'];
 		$soap_request="<GetAttLog><ArgComKey xsi:type=\"xsd:integer\">".$key."</ArgComKey><Arg><PIN xsi:type=\"xsd:integer\">All</PIN></Arg></GetAttLog>";
 		$buffer = $this->read($soap_request);
 		$buffer=$this->Parse_Data($buffer,"<GetAttLogResponse>","</GetAttLogResponse>");
