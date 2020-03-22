@@ -13,7 +13,7 @@ class fp_connect
 	function __construct()
 	{
 		$this->ip = $_SESSION['fp_config']['ip'];
-        $this->connect();
+        //$this->connect();
 	}
 
 	function connect($ip="")
@@ -31,6 +31,8 @@ class fp_connect
 
 	function read($soap_request)
 	{
+		 $this->connect();
+
 		 $tabel=$_SESSION['db_config']['tabel'];
 
 		 $koneksi = new db_connect();
@@ -67,7 +69,8 @@ class fp_connect
 	        $result = $koneksi->query($sql);
 			$buffer=$buffer.$Response;
 			$i=$i+1;			
-		}        
+		}
+		fclose($this->sock);        
         return $buffer;
 	}
 
@@ -98,7 +101,7 @@ class fp_connect
 		$soap_request="<ClearData><ArgComKey xsi:type=\"xsd:integer\">".$key."</ArgComKey><Arg><Value xsi:type=\"xsd:integer\">3</Value></Arg></ClearData>";
 		$buffer = $this->read($soap_request);
 		$buffer=$this->Parse_Data($buffer,"<Information>","</Information>");
-		echo $buffer;
+		//echo $buffer;
 	}
 
 	private function Parse_Data($data,$p1,$p2){
